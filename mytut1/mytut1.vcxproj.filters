@@ -16,8 +16,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="vertextShader.glsl" />
     <None Include="fragmentShader.glsl" />
+    <None Include="vertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">

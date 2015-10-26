@@ -89,6 +89,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)/framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,7 +149,7 @@
   <ItemGroup>
     <None Include="fragmentShader.glsl" />
     <None Include="packages.config" />
-    <None Include="vertextShader.glsl" />
+    <None Include="vertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />
