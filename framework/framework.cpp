@@ -1,13 +1,20 @@
-// Supress fopen errors on Windows
+﻿// Supress fopen errors on Windows
 #define _CRT_SECURE_NO_WARNINGS
-
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <stdio.h>
 #include <fstream>
+#include <sstream>
 #include <string>
+#include <codecvt>
+#include <iostream>
 #include "framework.h"
+
+#define ENCODING_ASCII      0
+#define ENCODING_UTF8       1
+#define ENCODING_UTF16LE    2
+#define ENCODING_UTF16BE    3
 
 // Just function prototypes (aka declarations), we
 // could define the functions later in each tutorials
@@ -23,44 +30,107 @@ extern "C" {
 	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
 }
 
-// Used mainly to load GLSL files,
-// from: https://github.com/jckarter/hello-gl/blob/master/util.c
-
-// this is a c++ conversion of the original c style method
-// it is test to be as fast as the C implementation
-// http://insanecoding.blogspot.hk/2011/11/how-to-read-in-file-in-c.html
-std::string get_file_contents(const char *filename)
-{
-	std::ifstream in(filename, std::ios::in | std::ios::binary);
-	if (in)
-	{
-		std::string contents;
-		in.seekg(0, std::ios::end);
-		contents.resize(in.tellg());
-		in.seekg(0, std::ios::beg);
-		in.read(&contents[0], contents.size());
-		in.close();
-		return(contents);
+std::string ReplaceString(std::string subject, const std::string& search,
+	const std::string& replace) {
+	size_t pos = 0;
+	while ((pos = subject.find(search, pos)) != std::string::npos) {
+		subject.replace(pos, search.length(), replace);
+		pos += replace.length();
 	}
-	throw(errno);
+	return subject;
 }
 
-GLuint Framework::makeShader(GLenum type, const char* filename)
-{
-	GLuint shader = glCreateShader(type);
-	GLint length, shader_ok;
-	const std::string content = get_file_contents(filename);
-	glShaderSource(shader, 1, (const char**)content.c_str(), NULL);
-	glCompileShader(shader);
+namespace Framework {
+	// Used mainly to load GLSL files,
+	// from: https://github.com/jckarter/hello-gl/blob/master/util.c
 
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &shader_ok);
+	// this is a c++ conversion of the original c style method
+	// it is test to be as fast as the C implementation
+	// http://insanecoding.blogspot.hk/2011/11/how-to-read-in-file-in-c.html
+	std::string getFileContents(const std::string path)
+	{
+		std::string result;
+		std::ifstream ifs(path.c_str(), std::ios::binary);
+		std::stringstream ss;
+		int encoding = ENCODING_ASCII;
 
-	if (shader_ok == GL_FALSE) {
-		fprintf(stderr, "Error to compile shader: %s", filename);
-		
+		if (!ifs.is_open()) {
+			// Unable to read file
+			result.clear();
+			return result;
+		}
+		else if (ifs.eof()) {
+			result.clear();
+		}
+		else {
+			int ch1 = ifs.get();
+			int ch2 = ifs.get();
+			if (ch1 == 0xff && ch2 == 0xfe) {
+				// The file contains UTF-16LE BOM
+				encoding = ENCODING_UTF16LE;
+			}
+			else if (ch1 == 0xfe && ch2 == 0xff) {
+				// The file contains UTF-16BE BOM
+				encoding = ENCODING_UTF16BE;
+			}
+			else {
+				int ch3 = ifs.get();
+				if (ch1 == 0xef && ch2 == 0xbb && ch3 == 0xbf) {
+					// The file contains UTF-8 BOM
+					encoding = ENCODING_UTF8;
+				}
+				else {
+					// The file does not have BOM
+					encoding = ENCODING_ASCII;
+					ifs.seekg(0);
+				}
+			}
+		}
+		ss << ifs.rdbuf() << "";
+		if (encoding == ENCODING_UTF16LE) {
+			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> utfconv;
+			result = utfconv.to_bytes(std::wstring((wchar_t *)ss.str().c_str()));
+		}
+		else if (encoding == ENCODING_UTF16BE) {
+			std::string src = ss.str();
+			std::string dst = src;
+			// Using Windows API
+			_swab(&src[0u], &dst[0u], src.size() + 1);
+			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> utfconv;
+			result = utfconv.to_bytes(std::wstring((wchar_t *)dst.c_str()));
+		}
+		else if (encoding == ENCODING_UTF8) {
+			result = ss.str();
+		}
+		else {
+			result = ss.str();
+		}
+		result = ReplaceString(result, "\r\n", "\n");
+		return result;
 	}
 
-	return shader;
+	GLuint makeShader(GLenum type, const char* filename)
+	{
+		GLuint shader = glCreateShader(type);
+		GLint length, shader_ok;
+		const std::string content = getFileContents(filename);
+		const char* str = content.c_str();
+		glShaderSource(shader, 1, &str, NULL);
+		glCompileShader(shader);
+
+		glGetShaderiv(shader, GL_COMPILE_STATUS, &shader_ok);
+
+		if (shader_ok == GL_FALSE) {
+			fprintf(stderr, "Error to compile shader: %s: ", filename);
+			GLint logInfoLengh;
+			glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logInfoLengh);
+			GLchar* log = new GLchar[logInfoLengh + 1];
+			glGetShaderInfoLog(shader, logInfoLengh, NULL, log);
+			fprintf(stderr, "%s", log);
+		}
+
+		return shader;
+	}
 }
 
 int main(int argc, char** argv)

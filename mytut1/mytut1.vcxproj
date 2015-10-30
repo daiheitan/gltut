@@ -149,7 +149,7 @@
   <ItemGroup>
     <None Include="fragmentShader.glsl" />
     <None Include="packages.config" />
-    <None Include="vertexShader.glsl" />
+    <None Include="VertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />
@@ -158,6 +158,9 @@
     <ProjectReference Include="..\framework\framework.vcxproj">
       <Project>{db8d66f8-3e94-4525-a41d-3da9869fa2cd}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

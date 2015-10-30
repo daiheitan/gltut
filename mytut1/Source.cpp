@@ -1,8 +1,8 @@
-
+﻿
 #include <GL\glew.h>
 #include <GL\freeglut.h>
 #include <vector>
-#include "framework.h";
+#include "framework.h"
 
 GLuint program;
 
