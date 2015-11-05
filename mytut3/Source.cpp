@@ -54,7 +54,7 @@ void init()
 
 void display()
 {
-	glClearColor(0.0f, 0.8f, 0.0f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(program);
