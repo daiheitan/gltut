@@ -9,10 +9,13 @@ GLuint program, positionBufferObj, vao;
 
 void init()
 {
-	const float vertexPositions[] = {
-		0.75f, 0.75f, 0.0f, 1.0f,
-		0.75f, -0.75f, 0.0f, 1.0f,
-		-0.75f, -0.75f, 0.0f, 1.0f,
+	const float vertexData[] = {
+		0.0f,    0.5f, 0.0f, 1.0f,
+		0.5f, -0.366f, 0.0f, 1.0f,
+	   -0.5f, -0.366f, 0.0f, 1.0f,
+		1.0f,    0.0f, 0.0f, 1.0f,
+		0.0f,    1.0f, 0.0f, 1.0f,
+		0.0f,    0.0f, 1.0f, 1.0f,
 	};
 	// Compile shaders
 	std::vector<GLuint> shaderList;
@@ -44,7 +47,7 @@ void init()
 	// Create buffer
 	glGenBuffers(1, &positionBufferObj);
 	glBindBuffer(GL_ARRAY_BUFFER, positionBufferObj);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPositions), vertexPositions, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
 	// Clear bind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -61,14 +64,15 @@ void display()
 
 	// We claim that positionBufferObj is an array buffer
 	glBindBuffer(GL_ARRAY_BUFFER, positionBufferObj);
-	// We bind the buffer to vertex attribute location 0
 	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
-
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void*)48);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	// Clean up
 	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
 	glUseProgram(0);
 
 	// Force openGL use our buffers
