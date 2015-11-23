@@ -3,12 +3,14 @@
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+#include <algorithm>
 #include <stdio.h>
 #include <fstream>
 #include <sstream>
 #include <string>
 #include <codecvt>
 #include <iostream>
+#include <vector>
 #include "framework.h"
 
 #define ENCODING_ASCII      0
@@ -130,6 +132,32 @@ namespace Framework {
 		}
 
 		return shader;
+	}
+
+	GLuint createProgram(const std::vector<GLuint>& shaderList)
+	{
+		GLuint program = glCreateProgram();
+		for (size_t i = 0; i < shaderList.size(); i++) {
+			glAttachShader(program, shaderList[i]);
+		}
+		glLinkProgram(program);
+		GLint status;
+		glGetProgramiv(program, GL_LINK_STATUS, &status);
+		if (status == GL_FALSE) {
+			GLint infoLogLength;
+			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogLength);
+			GLchar* log = new GLchar[infoLogLength + 1];
+			glGetProgramInfoLog(program, infoLogLength, NULL, log);
+			fprintf(stderr, "Linker failure: %s\n", log);
+			delete[] log;
+		}
+		// Detach shaders
+		for (size_t i = 0; i < shaderList.size(); i++) {
+			glDetachShader(program, shaderList[i]);
+		}
+		// Delete shaders
+		std::for_each(shaderList.begin(), shaderList.end(), glDeleteShader);
+		return program;
 	}
 }
 
