@@ -1,9 +1,16 @@
 #version 330
 
-out vec4 color;
+out vec4 outputColor;
+uniform float fLoopDuration;
+uniform float elapsedTime;
+
+const vec4 firstColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+const vec4 secondColor = vec4(0.0f, 1.0f, 0.0f, 1.0f);
 
 void main()
 {
-	float lerpValue = gl_FragCoord.y / 500.0f;
-	color = mix(vec4(1.0f, 1.0f, 1.0f, 1.0f), vec4(0.2f, 0.2f, 0.2f, 1.0f), lerpValue);
+    float currTime = mod(elapsedTime / 1000.0f, fLoopDuration);
+    float currLerp = currTime / fLoopDuration;
+    
+    outputColor = mix(firstColor, secondColor, currLerp);
 }
