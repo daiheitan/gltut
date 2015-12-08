@@ -3,8 +3,13 @@
 layout(location = 0) in vec4 position;
 layout(location = 1) in vec4 color;
 out vec4 theColor;
+
 uniform float fLoopDuration;
 uniform float elapsedTime;
+
+uniform float frustumScale;
+uniform float zNear;
+uniform float zFar;
 
 void main()
 {
@@ -17,5 +22,11 @@ void main()
 		sin(currentTime * fScale) * 0.5f,
 		0, 0
 	);
-    gl_Position = position + totalOffset;
+    vec4 cameraPos = position + totalOffset;
+	vec4 clipPos;
+	clipPos.xy = cameraPos.xy * frustumScale;
+	clipPos.z = cameraPos.z * (zNear + zFar) / (zNear - zFar);
+	clipPos.z += 2 * zNear * zFar / (zNear - zFar);
+	clipPos.w = -cameraPos.z;
+	gl_Position = clipPos;
 }

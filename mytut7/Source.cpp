@@ -6,53 +6,53 @@
 
 #define ARRAY_COUNT( array ) (sizeof( array ) / (sizeof( array[0] ) * (sizeof( array ) != sizeof(void*) || sizeof( array[0] ) <= sizeof(void*))))
 const float vertexData[] = {
-	0.25f,  0.25f, 0.75f, 1.0f,
-	0.25f, -0.25f, 0.75f, 1.0f,
-	-0.25f,  0.25f, 0.75f, 1.0f,
+	0.25f,  0.25f, -1.25f, 1.0f,
+	0.25f, -0.25f, -1.25f, 1.0f,
+	-0.25f,  0.25f, -1.25f, 1.0f,
 
-	0.25f, -0.25f, 0.75f, 1.0f,
-	-0.25f, -0.25f, 0.75f, 1.0f,
-	-0.25f,  0.25f, 0.75f, 1.0f,
+	0.25f, -0.25f, -1.25f, 1.0f,
+	-0.25f, -0.25f, -1.25f, 1.0f,
+	-0.25f,  0.25f, -1.25f, 1.0f,
 
-	0.25f,  0.25f, -0.75f, 1.0f,
-	-0.25f,  0.25f, -0.75f, 1.0f,
-	0.25f, -0.25f, -0.75f, 1.0f,
+	0.25f,  0.25f, -2.75f, 1.0f,
+	-0.25f,  0.25f, -2.75f, 1.0f,
+	0.25f, -0.25f, -2.75f, 1.0f,
 
-	0.25f, -0.25f, -0.75f, 1.0f,
-	-0.25f,  0.25f, -0.75f, 1.0f,
-	-0.25f, -0.25f, -0.75f, 1.0f,
+	0.25f, -0.25f, -2.75f, 1.0f,
+	-0.25f,  0.25f, -2.75f, 1.0f,
+	-0.25f, -0.25f, -2.75f, 1.0f,
 
-	-0.25f,  0.25f,  0.75f, 1.0f,
-	-0.25f, -0.25f,  0.75f, 1.0f,
-	-0.25f, -0.25f, -0.75f, 1.0f,
+	-0.25f,  0.25f, -1.25f, 1.0f,
+	-0.25f, -0.25f, -1.25f, 1.0f,
+	-0.25f, -0.25f, -2.75f, 1.0f,
 
-	-0.25f,  0.25f,  0.75f, 1.0f,
-	-0.25f, -0.25f, -0.75f, 1.0f,
-	-0.25f,  0.25f, -0.75f, 1.0f,
+	-0.25f,  0.25f, -1.25f, 1.0f,
+	-0.25f, -0.25f, -2.75f, 1.0f,
+	-0.25f,  0.25f, -2.75f, 1.0f,
 
-	0.25f,  0.25f,  0.75f, 1.0f,
-	0.25f, -0.25f, -0.75f, 1.0f,
-	0.25f, -0.25f,  0.75f, 1.0f,
+	0.25f,  0.25f, -1.25f, 1.0f,
+	0.25f, -0.25f, -2.75f, 1.0f,
+	0.25f, -0.25f, -1.25f, 1.0f,
 
-	0.25f,  0.25f,  0.75f, 1.0f,
-	0.25f,  0.25f, -0.75f, 1.0f,
-	0.25f, -0.25f, -0.75f, 1.0f,
+	0.25f,  0.25f, -1.25f, 1.0f,
+	0.25f,  0.25f, -2.75f, 1.0f,
+	0.25f, -0.25f, -2.75f, 1.0f,
 
-	0.25f,  0.25f, -0.75f, 1.0f,
-	0.25f,  0.25f,  0.75f, 1.0f,
-	-0.25f,  0.25f,  0.75f, 1.0f,
+	0.25f,  0.25f, -2.75f, 1.0f,
+	0.25f,  0.25f, -1.25f, 1.0f,
+	-0.25f,  0.25f, -1.25f, 1.0f,
 
-	0.25f,  0.25f, -0.75f, 1.0f,
-	-0.25f,  0.25f,  0.75f, 1.0f,
-	-0.25f,  0.25f, -0.75f, 1.0f,
+	0.25f,  0.25f, -2.75f, 1.0f,
+	-0.25f,  0.25f, -1.25f, 1.0f,
+	-0.25f,  0.25f, -2.75f, 1.0f,
 
-	0.25f, -0.25f, -0.75f, 1.0f,
-	-0.25f, -0.25f,  0.75f, 1.0f,
-	0.25f, -0.25f,  0.75f, 1.0f,
+	0.25f, -0.25f, -2.75f, 1.0f,
+	-0.25f, -0.25f, -1.25f, 1.0f,
+	0.25f, -0.25f, -1.25f, 1.0f,
 
-	0.25f, -0.25f, -0.75f, 1.0f,
-	-0.25f, -0.25f, -0.75f, 1.0f,
-	-0.25f, -0.25f,  0.75f, 1.0f,
+	0.25f, -0.25f, -2.75f, 1.0f,
+	-0.25f, -0.25f, -2.75f, 1.0f,
+	-0.25f, -0.25f, -1.25f, 1.0f,
 
 
 
@@ -103,10 +103,11 @@ const float vertexData[] = {
 
 	0.0f, 1.0f, 1.0f, 1.0f,
 	0.0f, 1.0f, 1.0f, 1.0f,
-	0.0f, 1.0f, 1.0f, 1.0f
+	0.0f, 1.0f, 1.0f, 1.0f,
+
 };
 
-GLuint program, positionBufferObj, elapsedTime, fLoopDuration;
+GLuint program, positionBufferObj, elapsedTime, fLoopDuration, frustumScaleUnif, zNearUnif, zFarUnif;
 GLuint vao;
 
 void initializeProgram()
@@ -118,7 +119,14 @@ void initializeProgram()
 	program = Framework::createProgram(shaderList);
 	elapsedTime = glGetUniformLocation(program, "elapsedTime");
 	fLoopDuration = glGetUniformLocation(program, "fLoopDuration");
+	frustumScaleUnif = glGetUniformLocation(program, "frustumScale");
+	zNearUnif = glGetUniformLocation(program, "zNear");
+	zFarUnif = glGetUniformLocation(program, "zFar");
+
 	glUseProgram(program);
+	glUniform1f(frustumScaleUnif, 1.0f);
+	glUniform1f(zNearUnif, 1.0f);
+	glUniform1f(zFarUnif, 3.0f);
 	glUniform1f(fLoopDuration, 5.0f);
 	glUseProgram(0);
 }
