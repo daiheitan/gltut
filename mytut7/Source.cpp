@@ -107,26 +107,41 @@ const float vertexData[] = {
 
 };
 
-GLuint program, positionBufferObj, elapsedTime, fLoopDuration, frustumScaleUnif, zNearUnif, zFarUnif;
+GLuint program, positionBufferObj, elapsedTime, fLoopDuration, /*frustumScaleUnif, zNearUnif, zFarUnif,*/ perspectiveMatrixUnif;
 GLuint vao;
 
 void initializeProgram()
 {
 	std::vector<GLuint> shaderList;
-	shaderList.push_back(Framework::makeShader(GL_VERTEX_SHADER, "vertexShader.glsl"));
+	shaderList.push_back(Framework::makeShader(GL_VERTEX_SHADER, "vertexShaderWithMatrix.glsl")); // replace with "vertexShader.glsl" to get the original vertex shader
 	shaderList.push_back(Framework::makeShader(GL_FRAGMENT_SHADER, "fragmentShader.glsl"));
 
 	program = Framework::createProgram(shaderList);
 	elapsedTime = glGetUniformLocation(program, "elapsedTime");
 	fLoopDuration = glGetUniformLocation(program, "fLoopDuration");
-	frustumScaleUnif = glGetUniformLocation(program, "frustumScale");
+	perspectiveMatrixUnif = glGetUniformLocation(program, "perspectiveMatrix");
+	/*frustumScaleUnif = glGetUniformLocation(program, "frustumScale");
 	zNearUnif = glGetUniformLocation(program, "zNear");
 	zFarUnif = glGetUniformLocation(program, "zFar");
 
 	glUseProgram(program);
 	glUniform1f(frustumScaleUnif, 1.0f);
 	glUniform1f(zNearUnif, 1.0f);
-	glUniform1f(zFarUnif, 3.0f);
+	glUniform1f(zFarUnif, 3.0f);*/
+
+	float fFrustumScale = 1.0f, fzNear = 1.0f, fzFar = 3.0f;
+
+	float theMatrix[16];
+	memset(theMatrix, 0, sizeof(float) * 16);
+
+	theMatrix[0] = fFrustumScale;
+	theMatrix[5] = fFrustumScale;
+	theMatrix[10] = (fzFar + fzNear) / (fzNear - fzFar);
+	theMatrix[14] = (2 * fzFar * fzNear) / (fzNear - fzFar);
+	theMatrix[11] = -1.0f;
+
+	glUseProgram(program);
+	glUniformMatrix4fv(perspectiveMatrixUnif, 1, GL_FALSE, theMatrix);
 	glUniform1f(fLoopDuration, 5.0f);
 	glUseProgram(0);
 }

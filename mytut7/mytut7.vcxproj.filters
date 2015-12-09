@@ -23,5 +23,6 @@
     <None Include="fragmentShader.glsl" />
     <None Include="vertexShader.glsl" />
     <None Include="packages.config" />
+    <None Include="vertexShaderWithMatrix.glsl" />
   </ItemGroup>
 </Project>
