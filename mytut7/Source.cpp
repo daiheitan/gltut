@@ -109,6 +109,7 @@ const float vertexData[] = {
 
 GLuint program, positionBufferObj, elapsedTime, fLoopDuration, /*frustumScaleUnif, zNearUnif, zFarUnif,*/ perspectiveMatrixUnif;
 GLuint vao;
+float theMatrix[16], fFrustumScale;
 
 void initializeProgram()
 {
@@ -129,11 +130,10 @@ void initializeProgram()
 	glUniform1f(zNearUnif, 1.0f);
 	glUniform1f(zFarUnif, 3.0f);*/
 
-	float fFrustumScale = 1.0f, fzNear = 1.0f, fzFar = 3.0f;
+	float fzNear = 1.0f, fzFar = 3.0f;
 
-	float theMatrix[16];
 	memset(theMatrix, 0, sizeof(float) * 16);
-
+	fFrustumScale = 1.0f;
 	theMatrix[0] = fFrustumScale;
 	theMatrix[5] = fFrustumScale;
 	theMatrix[10] = (fzFar + fzNear) / (fzNear - fzFar);
@@ -190,6 +190,13 @@ void display()
 
 void reshape(int w, int h)
 {
+	/*int size = w;
+	if (w > h) size = h;
+	glViewport(0, 0, (GLsizei)size, (GLsizei)size);*/
+	theMatrix[0] = fFrustumScale / (w / (float)h);
+	glUseProgram(program);
+	glUniformMatrix4fv(perspectiveMatrixUnif, 1, false, theMatrix);
+	glUseProgram(0);
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 }
 
