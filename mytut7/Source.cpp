@@ -133,7 +133,7 @@ void initializeProgram()
 	float fzNear = 1.0f, fzFar = 3.0f;
 
 	memset(theMatrix, 0, sizeof(float) * 16);
-	fFrustumScale = 1.0f;
+	fFrustumScale = 2.0f;
 	theMatrix[0] = fFrustumScale;
 	theMatrix[5] = fFrustumScale;
 	theMatrix[10] = (fzFar + fzNear) / (fzNear - fzFar);
@@ -169,7 +169,6 @@ void init()
 
 void display()
 {
-	float fXOffset = 0.0f, fYOffset = 0.0f;
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
